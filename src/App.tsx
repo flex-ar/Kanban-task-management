@@ -1,7 +1,11 @@
+import Header from './components/Header';
+
 function App() {
   return (
-    <div className="h-screen dark:bg-slate-800 dark:text-white">
-      <h1 className="text-3xl font-bold underline">Kanban Task Management</h1>
+    <div className="h-screen dark:bg-slate-900 dark:text-white">
+      <Header />
+      <div>sidebar</div>
+      <div>content</div>
     </div>
   );
 }
