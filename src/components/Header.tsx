@@ -44,12 +44,12 @@ function Header() {
 
   return (
     <header className="flex items-center justify-between px-4 py-5 dark:bg-slate-800">
-      <div className="flex items-start gap-24 ps-3">
+      <div className="flex items-start gap-28 ps-3">
         <span>{theme === 'dark' ? <LogoLight /> : <LogoDark />}</span>
         <h1 className="text-2xl font-bold">{name}</h1>
       </div>
       <div className="flex gap-4">
-        <button className="flex items-center gap-1 rounded-full px-4 dark:bg-sky-500 dark:hover:bg-sky-400">
+        <button className="flex items-center gap-1 rounded-full fill-white px-4 dark:bg-sky-500 dark:hover:bg-sky-400">
           <span>
             <IconAddTask />
           </span>
