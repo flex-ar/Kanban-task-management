@@ -1,14 +1,16 @@
 import { useRef, useEffect, useState } from 'react';
 import { useThemeContext } from '../ThemeContext';
-import { IconAddTask } from '../assets/IconAddTaskMobile';
-import { IconVerticalEllipsis } from '../assets/IconVerticalEllipsis';
-import { LogoDark } from '../assets/LogoDark';
-import { LogoLight } from '../assets/LogoLight';
+import { IconAddTask } from './icons/IconAddTaskMobile';
+import { IconVerticalEllipsis } from './icons/IconVerticalEllipsis';
+import { LogoDark } from './icons/LogoDark';
+import { LogoLight } from './icons/LogoLight';
+import { LogoMobile } from './icons/LogoMobile';
+import Button from './buttons/Button';
 
 function Header() {
   const name = 'Platform Launch';
   const menuRef = useRef<HTMLDivElement>(null);
-  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const menuButtonRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useState(false);
   const { theme } = useThemeContext();
 
@@ -43,45 +45,57 @@ function Header() {
   }
 
   return (
-    <header className="flex items-center justify-between px-4 py-5 dark:bg-slate-800">
-      <div className="flex items-start gap-28 ps-3">
-        <span>{theme === 'dark' ? <LogoLight /> : <LogoDark />}</span>
+    <header className="sticky top-0 z-20 flex items-center justify-between px-4 py-5 dark:bg-slate-800">
+      <div className="flex items-center gap-4 ps-3 sm:gap-28">
+        <span className="hidden sm:block">
+          {theme === 'dark' ? <LogoLight /> : <LogoDark />}
+        </span>
+        <span className="block sm:hidden">
+          <LogoMobile />
+        </span>
         <h1 className="text-2xl font-bold">{name}</h1>
       </div>
       <div className="flex gap-4">
-        <button className="flex items-center gap-1 rounded-full fill-white px-4 dark:bg-sky-500 dark:hover:bg-sky-400">
+        <Button
+          className="flex items-center gap-1 rounded-full px-4"
+          onClick={() => {}}
+        >
           <span>
             <IconAddTask />
           </span>
-          <span className="hidden font-bold sm:block">Add New Task</span>
-        </button>
+          <span className="hidden font-bold md:block">Add New Task</span>
+        </Button>
         <div>
-          <button
-            ref={menuButtonRef}
-            className="rounded-full dark:hover:bg-slate-600"
-            onClick={handleOptionClick}
-          >
-            <span className="flex h-10 w-10 items-center justify-center">
-              <IconVerticalEllipsis />
-            </span>
-          </button>
+          <div ref={menuButtonRef}>
+            <Button
+              variant="ghost"
+              className="rounded-full"
+              onClick={handleOptionClick}
+            >
+              <span className="flex h-10 w-10 items-center justify-center dark:fill-slate-400">
+                <IconVerticalEllipsis />
+              </span>
+            </Button>
+          </div>
           {isActive && (
             <div
               ref={menuRef}
               className="absolute right-4 mt-2 flex flex-col rounded-md shadow-md dark:bg-slate-900"
             >
-              <button
+              <Button
+                variant="ghost"
+                className="w-full rounded-t-md px-4 py-3 text-start"
                 onClick={handleEditClick}
-                className="w-full rounded-t-md px-4 py-3 text-start dark:hover:bg-slate-600"
               >
                 Edit Board
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost-v2"
+                className="w-full rounded-b-md px-4 py-3 text-center text-red-400"
                 onClick={handleDeleteClick}
-                className="w-full rounded-b-md px-4 py-3 text-center text-red-400 dark:hover:bg-slate-600"
               >
                 Delete Board
-              </button>
+              </Button>
             </div>
           )}
         </div>
