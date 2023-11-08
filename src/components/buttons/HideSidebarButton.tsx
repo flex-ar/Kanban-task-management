@@ -1,5 +1,4 @@
-import { IconHideSidebar } from '../icons/IconHideSidebar';
-import { IconShowSidebar } from '../icons/IconShowSidebar';
+import { IconHideSidebar, IconShowSidebar } from '../icons';
 
 interface Props {
   hide: boolean;

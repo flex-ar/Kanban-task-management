@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { IconBoard } from '../icons/IconBoard';
+import { IconBoard } from '../icons';
 import Button from './Button';
 
 interface Props {

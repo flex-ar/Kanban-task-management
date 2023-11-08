@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
+
 interface Props {
   variant?: 'primary' | 'secondary' | 'ghost' | 'ghost-v2';
   className?: string;
   onClick: () => void;
   children: ReactNode;
 }
-
 function Button({
   variant = 'primary',
   className = '',
