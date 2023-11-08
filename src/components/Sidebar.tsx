@@ -1,6 +1,4 @@
-import { IconAddTask } from './icons/IconAddTaskMobile';
-import { IconDarkTheme } from './icons/IconDarkTheme';
-import { IconLightTheme } from './icons/IconLightTheme';
+import { IconAddTask, IconDarkTheme, IconLightTheme } from './icons';
 import { useThemeContext } from '../ThemeContext';
 import BoardButton from './buttons/BoardButton';
 
@@ -13,7 +11,7 @@ function Sidebar({ hide }: Props) {
 
   return (
     <nav
-      className={`fixed top-20 z-10 hidden h-[calc(100%-5rem)] w-72 pe-2 font-bold transition-transform dark:bg-slate-800 sm:flex sm:flex-col sm:justify-between ${
+      className={`fixed top-20 z-10 hidden h-[calc(100%-5rem)] w-72 pe-2 font-bold shadow-md transition-transform dark:bg-slate-800 sm:flex sm:flex-col sm:justify-between ${
         hide ? '-translate-x-full' : ''
       }`}
     >
