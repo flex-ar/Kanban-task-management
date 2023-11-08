@@ -1,5 +1,5 @@
 import { useDroppable } from '@dnd-kit/core';
-import type { ReactNode, CSSProperties } from 'react';
+import type { ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -7,11 +7,11 @@ interface Props {
 }
 function Droppable({ children, id }: Props) {
   const { isOver, setNodeRef } = useDroppable({ id });
-  const style: CSSProperties = {
-    backgroundColor: isOver ? 'green' : undefined,
-  };
   return (
-    <div ref={setNodeRef} style={style}>
+    <div
+      ref={setNodeRef}
+      className={`flex h-full flex-col gap-5 ${isOver ? 'bg-green-400' : ''}`}
+    >
       {children}
     </div>
   );
