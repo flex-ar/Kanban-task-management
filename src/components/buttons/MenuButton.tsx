@@ -53,7 +53,7 @@ function MenuButton({ text, className = 'right-4', onEdit, onDelete }: Props) {
           className="rounded-full"
           onClick={handleOptionClick}
         >
-          <span className="flex h-10 w-10 items-center justify-center dark:fill-slate-400">
+          <span className="flex h-10 w-10 items-center justify-center">
             <IconVerticalEllipsis />
           </span>
         </Button>
