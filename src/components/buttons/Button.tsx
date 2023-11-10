@@ -3,12 +3,14 @@ import type { ReactNode } from 'react';
 interface Props {
   variant?: 'primary' | 'secondary' | 'ghost' | 'ghost-v2';
   className?: string;
-  onClick: () => void;
+  type?: 'submit' | 'button';
+  onClick?: () => void;
   children: ReactNode;
 }
 function Button({
   variant = 'primary',
   className = '',
+  type = 'button',
   onClick,
   children,
 }: Props) {
@@ -27,7 +29,11 @@ function Button({
   if (variant === 'ghost-v2') variantStyle = 'dark:hover:bg-slate-700';
 
   return (
-    <button onClick={onClick} className={`${className} ${variantStyle}`}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={`${className} ${variantStyle}`}
+    >
       {children}
     </button>
   );

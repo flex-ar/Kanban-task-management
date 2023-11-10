@@ -1,13 +1,14 @@
-import { IconAddTask, IconDarkTheme, IconLightTheme } from './icons';
+import { IconDarkTheme, IconLightTheme } from './icons';
 import { useThemeContext } from '../ThemeContext';
 import BoardButton from './buttons/BoardButton';
+import { boards } from '../data.json';
+import AddBoardButton from './buttons/AddBoardButton';
 
 interface Props {
   hide: boolean;
 }
 function Sidebar({ hide }: Props) {
   const { theme, toggleTheme } = useThemeContext();
-  const totalBoards = 3;
 
   return (
     <nav
@@ -17,30 +18,24 @@ function Sidebar({ hide }: Props) {
     >
       <div className="flex flex-col overflow-auto">
         <p className="py-7 ps-6 text-xs tracking-widest dark:text-slate-400">
-          ALL BOARDS ({totalBoards})
+          ALL BOARDS ({boards.length})
         </p>
         <div className="flex flex-col overflow-auto pe-2">
-          <BoardButton active>Platform Launch</BoardButton>
-          <BoardButton>Marketing Plan</BoardButton>
-          <BoardButton>Roadmap</BoardButton>
+          {boards.map((board) => (
+            <BoardButton
+              key={board.name}
+              active={board.isActive}
+              onClick={() => {}}
+            >
+              {board.name}
+            </BoardButton>
+          ))}
         </div>
-        <BoardButton
-          variant="ghost-v2"
-          className={`dark:fill-sky-400 dark:text-sky-400 ${
-            totalBoards > 13 ? 'me-4' : 'me-2'
-          }`}
-        >
-          <div className="flex items-center gap-1">
-            <span>
-              <IconAddTask />
-            </span>
-            <span>Create New Board</span>
-          </div>
-        </BoardButton>
+        <AddBoardButton />
       </div>
       <div
         className={`mb-20 ms-5 mt-5 flex items-center justify-center gap-6 rounded-md px-5 py-3 dark:bg-slate-900 ${
-          totalBoards > 13 ? 'me-4' : 'me-2'
+          boards.length > 13 ? 'me-4' : 'me-2'
         }`}
       >
         <IconLightTheme />
