@@ -5,7 +5,7 @@ import InputText from './InputText';
 import { IconAddTask } from '../icons';
 import { useForm } from '../hooks/useForm';
 
-function AddBoardForm() {
+function CreateBoardForm() {
   const { inputs, onChange, addInput, deleteInput } = useForm([
     { id: 'name', value: '' },
     { id: randomId('col'), value: '' },
@@ -66,4 +66,4 @@ function AddBoardForm() {
   );
 }
 
-export default AddBoardForm;
+export default CreateBoardForm;

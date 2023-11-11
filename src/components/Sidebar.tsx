@@ -2,7 +2,7 @@ import { IconDarkTheme, IconLightTheme } from './icons';
 import { useThemeContext } from '../ThemeContext';
 import BoardButton from './buttons/BoardButton';
 import { boards } from '../data.json';
-import AddBoardButton from './buttons/AddBoardButton';
+import CreateBoardButton from './buttons/CreateBoardButton';
 
 interface Props {
   hide: boolean;
@@ -31,7 +31,7 @@ function Sidebar({ hide }: Props) {
             </BoardButton>
           ))}
         </div>
-        <AddBoardButton />
+        <CreateBoardButton />
       </div>
       <div
         className={`mb-20 ms-5 mt-5 flex items-center justify-center gap-6 rounded-md px-5 py-3 dark:bg-slate-900 ${

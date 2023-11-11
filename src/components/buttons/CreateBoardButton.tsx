@@ -1,14 +1,12 @@
-import { useRef, useState } from 'react';
 import { IconAddTask } from '../icons';
 import BoardButton from './BoardButton';
 import Modal from '../Modal';
 import { boards } from '../../data.json';
-import AddBoardForm from '../forms/AddBoardForm';
+import CreateBoardForm from '../forms/CreateBoardForm';
+import { useModal } from '../hooks/useModal';
 
-function AddBoardButton() {
-  const [isOpen, setIsOpen] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const outsideModalRef = useRef<HTMLDivElement>(null);
+function CreateBoardButton() {
+  const { isOpen, modalRef, outsideModalRef, onOpen, onClose } = useModal();
 
   return (
     <>
@@ -17,7 +15,7 @@ function AddBoardButton() {
         className={`dark:fill-sky-400 dark:text-sky-400 ${
           boards.length > 13 ? 'me-4' : 'me-2'
         }`}
-        onClick={() => setIsOpen(true)}
+        onClick={onOpen}
       >
         <div className="flex items-center gap-1">
           <span>
@@ -30,15 +28,13 @@ function AddBoardButton() {
         <Modal
           modalRef={modalRef}
           outsideModalRef={outsideModalRef}
-          onClose={() => {
-            setIsOpen(false);
-          }}
+          onClose={onClose}
         >
-          <AddBoardForm />
+          <CreateBoardForm />
         </Modal>
       )}
     </>
   );
 }
 
-export default AddBoardButton;
+export default CreateBoardButton;
