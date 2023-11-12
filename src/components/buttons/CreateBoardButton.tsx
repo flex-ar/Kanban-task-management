@@ -2,8 +2,8 @@ import { IconAddTask } from '../icons';
 import BoardButton from './BoardButton';
 import Modal from '../Modal';
 import { boards } from '../../data.json';
-import CreateBoardForm from '../forms/CreateBoardForm';
-import { useModal } from '../hooks/useModal';
+import { useModal } from '../../hooks/useModal';
+import BoardForm from '../forms/BoardForm';
 
 function CreateBoardButton() {
   const { isOpen, modalRef, outsideModalRef, onOpen, onClose } = useModal();
@@ -30,7 +30,11 @@ function CreateBoardButton() {
           outsideModalRef={outsideModalRef}
           onClose={onClose}
         >
-          <CreateBoardForm />
+          <BoardForm
+            title="Add New Board"
+            textButton="Create New Board"
+            onSubmit={console.log}
+          />
         </Modal>
       )}
     </>

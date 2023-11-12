@@ -1,27 +1,39 @@
 import { randomId } from '../../utils';
 import Button from '../buttons/Button';
 import CrossButton from '../buttons/CrossButton';
-import InputText from './InputText';
+import { type Input, useForm } from '../../hooks/useForm';
 import { IconAddTask } from '../icons';
-import { useForm } from '../hooks/useForm';
+import FormContainer from './FormContainer';
+import InputText from './InputText';
+import { boards } from '../../data.json';
 
-function CreateBoardForm() {
+interface Props {
+  title: string;
+  textButton: string;
+  boardId?: number;
+  onSubmit: (inputs: Input[]) => void;
+}
+function BoardForm({ title, textButton, boardId, onSubmit }: Props) {
+  const board =
+    boardId === undefined
+      ? { name: '', columns: [{ name: '' }, { name: '' }] }
+      : boards[boardId];
+
+  const columnsValues = board.columns.map(({ name }) => ({
+    id: randomId('col'),
+    value: name,
+  }));
+
   const { inputs, onChange, addInput, deleteInput } = useForm([
-    { id: 'name', value: '' },
-    { id: randomId('col'), value: '' },
-    { id: randomId('col'), value: '' },
+    { id: 'name', value: board.name },
+    ...columnsValues,
   ]);
+
   const colInputs = inputs.slice(1);
 
   return (
-    <form
-      className="flex max-h-[80vh] flex-col gap-6 overflow-auto px-3 text-lg font-bold"
-      onSubmit={(event) => {
-        event.preventDefault();
-        console.log(inputs);
-      }}
-    >
-      <p>Add New Board</p>
+    <FormContainer onSubmit={() => onSubmit(inputs)}>
+      <p>{title}</p>
       <div>
         <p className="mb-3 text-sm">Board Name</p>
         <InputText
@@ -60,10 +72,10 @@ function CreateBoardForm() {
         </Button>
       </div>
       <Button type="submit" className="rounded-full py-2 text-sm">
-        Create New Board
+        {textButton}
       </Button>
-    </form>
+    </FormContainer>
   );
 }
 
-export default CreateBoardForm;
+export default BoardForm;

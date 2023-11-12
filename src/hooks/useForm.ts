@@ -1,10 +1,12 @@
 import { useState, type ChangeEvent } from 'react';
 
-type Input = { id: string; value: string };
+export type Input = { id: string; value: string };
 export const useForm = (initialState: Input[]) => {
   const [inputs, setInputs] = useState(initialState);
 
-  function onChange({ target }: ChangeEvent<HTMLInputElement>) {
+  function onChange({
+    target,
+  }: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     const { name, value } = target;
     setInputs(
       inputs.map((i) => {

@@ -1,18 +1,22 @@
 import type { Task } from '../../types';
 
-function TaskCard({ title, subtasks }: Task) {
-  const subtasksCompleted = subtasks.filter(
+interface Props {
+  task: Task;
+  onClick: () => void;
+}
+function TaskCard({ task, onClick }: Props) {
+  const subtasksCompleted = task.subtasks.filter(
     ({ isCompleted }) => isCompleted
   ).length;
 
   return (
     <div
-      onClick={() => {}}
-      className="rounded-md p-5 shadow-md dark:bg-slate-800"
+      onClick={onClick}
+      className="rounded-md p-5 shadow-md dark:bg-slate-800 dark:hover:text-sky-400"
     >
-      <p>{title}</p>
+      <p>{task.title}</p>
       <span className="text-xs dark:text-slate-400">
-        {subtasksCompleted} of {subtasks.length} substasks
+        {subtasksCompleted} of {task.subtasks.length} substasks
       </span>
     </div>
   );

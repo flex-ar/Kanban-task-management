@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { IconVerticalEllipsis } from '../icons';
 import Button from './Button';
+import { useModal } from '../../hooks/useModal';
 
 interface Props {
   text: string;
@@ -9,58 +10,42 @@ interface Props {
   onDelete: () => void;
 }
 function MenuButton({ text, className = 'right-4', onEdit, onDelete }: Props) {
-  const menuRef = useRef<HTMLDivElement>(null);
-  const menuButtonRef = useRef<HTMLDivElement>(null);
-  const [isActive, setIsActive] = useState(false);
+  const { isOpen, modalRef: menuButtonRef, onClose, onToggle } = useModal();
 
   useEffect(() => {
     function handleMenuClick(e: MouseEvent) {
       const node = e.target as Node;
-      if (
-        !menuButtonRef.current?.contains(node) &&
-        !menuRef.current?.contains(node)
-      ) {
-        setIsActive(false);
-      }
+      if (!menuButtonRef.current?.contains(node)) onClose();
     }
 
-    if (isActive) window.addEventListener('click', handleMenuClick);
+    if (isOpen) window.addEventListener('click', handleMenuClick);
 
     return () => {
-      if (isActive) window.removeEventListener('click', handleMenuClick);
+      if (isOpen) window.removeEventListener('click', handleMenuClick);
     };
-  }, [isActive]);
-
-  function handleOptionClick() {
-    setIsActive(!isActive);
-  }
+  }, [isOpen, menuButtonRef, onClose]);
 
   function handleEditClick() {
-    setIsActive(!isActive);
     onEdit();
+    onClose();
   }
 
   function handleDeleteClick() {
-    setIsActive(!isActive);
     onDelete();
+    onClose();
   }
 
   return (
     <div>
       <div ref={menuButtonRef}>
-        <Button
-          variant="ghost"
-          className="rounded-full"
-          onClick={handleOptionClick}
-        >
+        <Button variant="ghost" className="rounded-full" onClick={onToggle}>
           <span className="flex h-10 w-10 items-center justify-center">
             <IconVerticalEllipsis />
           </span>
         </Button>
       </div>
-      {isActive && (
+      {isOpen && (
         <div
-          ref={menuRef}
           className={`absolute mt-2 flex flex-col rounded-md shadow-md dark:bg-slate-900 ${className}`}
         >
           <Button

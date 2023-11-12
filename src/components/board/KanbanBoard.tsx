@@ -5,11 +5,10 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { boards } from '../../data.json';
-import Button from '../buttons/Button';
 import Column from './Column';
-import { IconAddTask } from '../icons';
+import CreateColumnButton from '../buttons/CreateColumnButton';
 
-function Board() {
+function KanbanBoard() {
   const board = boards[0];
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 10 } })
@@ -22,20 +21,9 @@ function Board() {
           <Column key={column.name} {...column} />
         ))}
       </DndContext>
-      <Button
-        variant="ghost"
-        className="mb-1 mt-9 flex w-72 shrink-0 items-center justify-center gap-1 rounded-md text-2xl shadow-md dark:bg-slate-800 dark:hover:fill-sky-400 dark:hover:text-sky-400"
-        onClick={() => {}}
-      >
-        <span>
-          <IconAddTask />
-        </span>
-        New Column
-      </Button>
+      <CreateColumnButton />
     </div>
   );
 }
-
-const KanbanBoard = Board;
 
 export default KanbanBoard;
