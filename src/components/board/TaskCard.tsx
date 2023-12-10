@@ -1,11 +1,14 @@
-import type { Task } from '../../types';
+import { useStateContext } from '../../context/useStateContext';
+import { Subtask, type Task } from '../../types';
 
 interface Props {
   task: Task;
   onClick: () => void;
 }
 function TaskCard({ task, onClick }: Props) {
-  const subtasksCompleted = task.subtasks.filter(
+  const { get } = useStateContext();
+  const subtasks = task.subtaskIds.map((id) => get<Subtask>('subtasks', id));
+  const subtasksCompleted = subtasks.filter(
     ({ isCompleted }) => isCompleted
   ).length;
 
@@ -16,7 +19,7 @@ function TaskCard({ task, onClick }: Props) {
     >
       <p>{task.title}</p>
       <span className="text-xs dark:text-slate-400">
-        {subtasksCompleted} of {task.subtasks.length} substasks
+        {subtasksCompleted} of {subtasks.length} substasks
       </span>
     </div>
   );

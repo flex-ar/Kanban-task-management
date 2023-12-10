@@ -1,13 +1,15 @@
 import { IconDarkTheme, IconLightTheme } from './icons';
-import { useThemeContext } from '../ThemeContext';
+import { useThemeContext } from '../context/useThemeContext';
 import BoardButton from './buttons/BoardButton';
-import { boards } from '../data.json';
 import CreateBoardButton from './buttons/CreateBoardButton';
+import { useStateContext } from '../context/useStateContext';
+import { Board } from '../types';
 
 interface Props {
   hide: boolean;
 }
 function Sidebar({ hide }: Props) {
+  const { state, get, dispatch } = useStateContext();
   const { theme, toggleTheme } = useThemeContext();
 
   return (
@@ -18,24 +20,30 @@ function Sidebar({ hide }: Props) {
     >
       <div className="flex flex-col overflow-auto">
         <p className="py-7 ps-6 text-xs tracking-widest dark:text-slate-400">
-          ALL BOARDS ({boards.length})
+          ALL BOARDS ({state.boards.size})
         </p>
         <div className="flex flex-col overflow-auto pe-2">
-          {boards.map((board) => (
-            <BoardButton
-              key={board.name}
-              active={board.isActive}
-              onClick={() => {}}
-            >
-              {board.name}
-            </BoardButton>
-          ))}
+          {state.boardIds.map((id) => {
+            const board = get<Board>('boards', id);
+            return (
+              <BoardButton
+                key={board.name}
+                active={board.id === state.activeId}
+                onClick={() => {
+                  console.log(board);
+                  dispatch({ type: 'active_board', id });
+                }}
+              >
+                {board.name}
+              </BoardButton>
+            );
+          })}
         </div>
         <CreateBoardButton />
       </div>
       <div
         className={`mb-20 ms-5 mt-5 flex items-center justify-center gap-6 rounded-md px-5 py-3 dark:bg-slate-900 ${
-          boards.length > 13 ? 'me-4' : 'me-2'
+          state.boards.size > 13 ? 'me-4' : 'me-2'
         }`}
       >
         <IconLightTheme />

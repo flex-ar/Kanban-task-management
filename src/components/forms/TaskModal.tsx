@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import type { Task } from '../../types';
+import { Board, Column, Subtask, type Task } from '../../types';
 import MenuButton from '../buttons/MenuButton';
 import FormContainer from './FormContainer';
 import { IconChevronDown, IconChevronUp } from '../icons';
-import { boards } from '../../data.json';
+import { useStateContext } from '../../context/useStateContext';
 
 interface Props {
   task: Task;
@@ -12,8 +12,14 @@ interface Props {
 }
 function TaskModal({ task, onEdit, onDelete }: Props) {
   const [isOpen, setIsOpen] = useState(false);
-  const status = boards[0].columns.map((col) => col.name);
-  const subtasksCompleted = task.subtasks.filter(
+  const { state, get } = useStateContext();
+  const boardActive = state.activeId
+    ? get<Board>('boards', state.activeId)
+    : null;
+  const status =
+    boardActive?.columnIds.map((id) => get<Column>('columns', id).name) ?? [];
+  const subtasks = task.subtaskIds.map((id) => get<Subtask>('subtasks', id));
+  const subtasksCompleted = subtasks.filter(
     ({ isCompleted }) => isCompleted
   ).length;
 
@@ -33,9 +39,9 @@ function TaskModal({ task, onEdit, onDelete }: Props) {
       </p>
       <div className="flex flex-col gap-2 text-sm">
         <p>
-          Subtasks ({subtasksCompleted}) of ({task.subtasks.length})
+          Subtasks ({subtasksCompleted}) of ({subtasks.length})
         </p>
-        {task.subtasks.map(({ title, isCompleted }) => {
+        {subtasks.map(({ title, isCompleted }) => {
           return (
             <label
               key={title}
@@ -61,7 +67,7 @@ function TaskModal({ task, onEdit, onDelete }: Props) {
             placeholder="e.g. Take coffee break"
             onClick={() => setIsOpen(!isOpen)}
           >
-            {status.map((s) => (
+            {status?.map((s) => (
               <option className="dark:bg-slate-900" key={s} value={s}>
                 {s}
               </option>

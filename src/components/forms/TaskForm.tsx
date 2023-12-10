@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { Task } from '../../types';
 import { randomId } from '../../utils';
 import FormContainer from './FormContainer';
 import { useForm } from '../../hooks/useForm';
@@ -7,21 +6,22 @@ import InputText from './InputText';
 import CrossButton from '../buttons/CrossButton';
 import Button from '../buttons/Button';
 import { IconAddTask, IconChevronDown, IconChevronUp } from '../icons';
-import { boards } from '../../data.json';
+import { useStateContext } from '../../context/useStateContext';
+import { Board, Column } from '../../types';
 
 interface Props {
   title: string;
   textButton: string;
-  boardId: number;
-  task?: Task;
 }
-function TaskForm({ title, textButton, boardId, task }: Props) {
-  const statusList = boards[boardId].columns.map((col) => col.name);
+function TaskForm({ title, textButton }: Props) {
+  const { state, get } = useStateContext();
+  const statusList = state.activeId
+    ? get<Board>('boards', state.activeId).columnIds.map(
+        (id) => get<Column>('columns', id).name
+      )
+    : [];
 
-  const subtasksValues = task?.subtasks.map(({ title }) => ({
-    id: randomId('col'),
-    value: title,
-  })) ?? [
+  const subtasksValues = [
     { id: randomId('sub'), value: '' },
     { id: randomId('sub'), value: '' },
   ];
@@ -29,9 +29,9 @@ function TaskForm({ title, textButton, boardId, task }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const { inputs, onChange, addInput, deleteInput } = useForm([
-    { id: 'title', value: task?.title ?? '' },
-    { id: 'description', value: task?.description ?? '' },
-    { id: 'status', value: task?.status ?? '' },
+    { id: 'title', value: '' },
+    { id: 'description', value: '' },
+    { id: 'status', value: '' },
     ...subtasksValues,
   ]);
 

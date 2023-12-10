@@ -1,35 +1,37 @@
-import { randomId } from '../../utils';
+import { createBoard, createColumn, randomId } from '../../utils';
 import Button from '../buttons/Button';
 import CrossButton from '../buttons/CrossButton';
 import { type Input, useForm } from '../../hooks/useForm';
 import { IconAddTask } from '../icons';
 import FormContainer from './FormContainer';
 import InputText from './InputText';
-import { boards } from '../../data.json';
+import type { Board, Column } from '../../types';
 
 interface Props {
   title: string;
   textButton: string;
-  boardId?: number;
+  board?: Board;
+  columns?: Column[];
   onSubmit: (inputs: Input[]) => void;
 }
-function BoardForm({ title, textButton, boardId, onSubmit }: Props) {
-  const board =
-    boardId === undefined
-      ? { name: '', columns: [{ name: '' }, { name: '' }] }
-      : boards[boardId];
+function BoardForm({
+  title,
+  textButton,
+  board = createBoard(),
+  columns = [createColumn(), createColumn()],
+  onSubmit,
+}: Props) {
+  const initialStateForm: Input[] = [
+    { id: board.id, value: board.name },
+  ].concat(
+    columns.map((col) => ({
+      id: col.id,
+      value: col.name,
+    }))
+  );
 
-  const columnsValues = board.columns.map(({ name }) => ({
-    id: randomId('col'),
-    value: name,
-  }));
-
-  const { inputs, onChange, addInput, deleteInput } = useForm([
-    { id: 'name', value: board.name },
-    ...columnsValues,
-  ]);
-
-  const colInputs = inputs.slice(1);
+  const { inputs, onChange, addInput, deleteInput } = useForm(initialStateForm);
+  const [boardInput, ...columnInputs] = inputs;
 
   return (
     <FormContainer onSubmit={() => onSubmit(inputs)}>
@@ -37,15 +39,15 @@ function BoardForm({ title, textButton, boardId, onSubmit }: Props) {
       <div>
         <p className="mb-3 text-sm">Board Name</p>
         <InputText
-          name={inputs[0].id}
-          value={inputs[0].value}
+          name={boardInput.id}
+          value={boardInput.value}
           placeholder="e.g. Web Design"
           onChange={onChange}
         />
       </div>
       <div className="flex flex-col gap-3">
         <p className="text-sm">Board Columns</p>
-        {colInputs.map(({ id, value }) => (
+        {columnInputs.map(({ id, value }) => (
           <div key={id} className="flex gap-2">
             <InputText
               name={id}
@@ -55,7 +57,7 @@ function BoardForm({ title, textButton, boardId, onSubmit }: Props) {
             />
             <CrossButton
               onClick={() => {
-                if (colInputs.length > 2) deleteInput(id);
+                if (columnInputs.length > 2) deleteInput(id);
               }}
             />
           </div>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
 import type { ReactNode } from 'react';
 
 export type Theme = 'dark' | 'light';
@@ -10,7 +10,9 @@ type ThemeContextType = {
   theme: Theme;
   toggleTheme: () => void;
 };
-const ThemeContext = createContext<ThemeContextType>({} as ThemeContextType);
+export const ThemeContext = createContext<ThemeContextType>(
+  {} as ThemeContextType
+);
 
 function ThemeContextProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(initialMode);
@@ -30,8 +32,6 @@ function ThemeContextProvider({ children }: { children: ReactNode }) {
     </ThemeContext.Provider>
   );
 }
-
-export const useThemeContext = () => useContext(ThemeContext);
 
 function getPreferredMode(): Theme {
   const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;

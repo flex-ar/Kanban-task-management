@@ -1,19 +1,27 @@
 import { IconAddTask } from '../icons';
 import BoardButton from './BoardButton';
 import Modal from '../Modal';
-import { boards } from '../../data.json';
 import { useModal } from '../../hooks/useModal';
 import BoardForm from '../forms/BoardForm';
+import type { Input } from '../../hooks/useForm';
+import { useStateContext } from '../../context/useStateContext';
 
 function CreateBoardButton() {
   const { isOpen, modalRef, outsideModalRef, onOpen, onClose } = useModal();
+  const { state } = useStateContext();
+
+  function handleCreateBoard(inputs: Input[]) {
+    const [name, ...cols] = inputs;
+    console.log(name, cols);
+    onClose();
+  }
 
   return (
     <>
       <BoardButton
         variant="ghost-v2"
         className={`dark:fill-sky-400 dark:text-sky-400 ${
-          boards.length > 13 ? 'me-4' : 'me-2'
+          state.boards.size > 13 ? 'me-4' : 'me-2'
         }`}
         onClick={onOpen}
       >
@@ -33,7 +41,7 @@ function CreateBoardButton() {
           <BoardForm
             title="Add New Board"
             textButton="Create New Board"
-            onSubmit={console.log}
+            onSubmit={handleCreateBoard}
           />
         </Modal>
       )}

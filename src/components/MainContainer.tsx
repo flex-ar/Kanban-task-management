@@ -15,7 +15,7 @@ function MainContainer() {
       <Sidebar hide={hide} />
       <main
         className={`h-[calc(100%-5rem)] overflow-auto transition-padding dark:bg-slate-900 ${
-          hide ? 'p-0' : 'ps-72'
+          hide ? 'p-0' : 'sm:ps-72'
         }`}
       >
         <KanbanBoard />

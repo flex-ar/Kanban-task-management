@@ -7,8 +7,11 @@ import { useModal } from '../../hooks/useModal';
 import Modal from '../Modal';
 import TaskModal from '../forms/TaskModal';
 import TaskForm from '../forms/TaskForm';
+import { useStateContext } from '../../context/useStateContext';
 
-function Column({ name, tasks }: ColumnType) {
+function Column({ id, name, taskIds }: ColumnType) {
+  const { get } = useStateContext();
+  const tasks = taskIds.map((id) => get<Task>('tasks', id));
   const [formType, setFormType] = useState<'task' | 'edit'>('task');
   const [task, setTask] = useState<Task | null>(null);
   const { isOpen, modalRef, outsideModalRef, onOpen, onClose } = useModal();
@@ -21,7 +24,7 @@ function Column({ name, tasks }: ColumnType) {
           {name} ({tasks.length})
         </p>
       </div>
-      <Droppable id={name}>
+      <Droppable id={id}>
         {tasks.map((task) => (
           <Draggable key={task.title} id={task.title}>
             <TaskCard
@@ -52,12 +55,7 @@ function Column({ name, tasks }: ColumnType) {
               onDelete={() => {}}
             />
           ) : (
-            <TaskForm
-              title="Edit Task"
-              textButton="Create Task"
-              boardId={0}
-              task={task}
-            />
+            <TaskForm title="Edit Task" textButton="Create Task" />
           )}
         </Modal>
       )}
